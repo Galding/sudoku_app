@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">sudoku_app</string>
+    <string name="empty_grid_desc">an empty grid of sudoku</string>
 </resources>
