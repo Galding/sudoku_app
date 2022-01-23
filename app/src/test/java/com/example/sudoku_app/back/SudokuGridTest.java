@@ -52,6 +52,33 @@ public class SudokuGridTest {
         assertThat(grid.getCellValue(0,0)).isZero();
     }
 
+    @Test
+    public void should_get_the_first_row(){
+        grid.fillGrid(given_a_grid_to_fill_with());
+
+        List<Integer> firstRow = grid.getRow(0);
+
+        assertThat(firstRow).isEqualTo(grid.getACloneOfTheGrid().get(0));
+    }
+
+    @Test
+    public void should_get_the_first_column(){
+        grid.fillGrid(given_a_grid_to_fill_with());
+
+        List<Integer> firstColumn = grid.getColumn(0);
+
+        assertThat(firstColumn).isEqualTo(given_a_column(0));
+    }
+
+    private List<Integer> given_a_column(int colIndex) {
+        List<List<Integer>> gridClone = grid.getACloneOfTheGrid();
+        List<Integer> res = new ArrayList<>();
+        for(int i = 0; i < GRID_ROW_COL_SIZE; i++){
+            res.add(gridClone.get(i).get(colIndex));
+        }
+        return res;
+    }
+
     private List<List<Integer>> given_a_grid_to_fill_with() {
         Random random = new Random();
         List<List<Integer>> res = new ArrayList<>();

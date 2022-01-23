@@ -42,4 +42,16 @@ public class SudokuGrid {
         return res;
     }
 
+    public List<Integer> getRow(int rowIndex){
+        return new ArrayList<>(grid.get(rowIndex));
+    }
+
+    public List<Integer> getColumn(int colIndex){
+        List<Integer> col = new ArrayList<>();
+        for(int i = 0; i < GRID_ROW_COL_SIZE; i++){
+            col.add(grid.get(i).get(colIndex));
+        }
+        return col;
+    }
+
 }
