@@ -1,16 +1,15 @@
 package com.example.sudoku_app.back;
 
+import android.util.Pair;
 import com.example.sudoku_app.R;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.sudoku_app.back.SudokuGrid.GRID_ROW_COL_SIZE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 public class SudokuGridTest {
     private final SudokuGrid grid = new SudokuGrid();
@@ -70,6 +69,36 @@ public class SudokuGridTest {
         assertThat(firstColumn).isEqualTo(given_a_column(0));
     }
 
+    @Test
+    public void should_get_the_first_case_of_the_first_square(){
+        Map<Integer, Integer> firstCaseOfTheFirstSquare = grid.get_first_case_of_a_square(1,2);
+
+        assertThat(firstCaseOfTheFirstSquare).contains(entry(0,0));
+    }
+
+    @Test
+    public void should_get_the_first_square(){
+        grid.fillGrid(given_a_grid_to_fill_with());
+
+        List<Integer> firstSquare = grid.get_square(1,2);
+
+        assertThat(firstSquare).isEqualTo(given_a_square(1,2));
+    }
+
+    private List<Integer> given_a_square(int rowIndex, int colIndex) {
+        List<List<Integer>> gridClone = grid.getACloneOfTheGrid();
+        Map<Integer, Integer> firstCase = grid.get_first_case_of_a_square(rowIndex, colIndex);
+        List<Integer> res = new ArrayList<>();
+        final int x = firstCase.keySet().stream().findFirst().orElse(-1);
+        final int y = firstCase.values().stream().findFirst().orElse(-1);
+        for(int x0 = x; x0 < x+3; x0++){
+            for(int y0 = y; y0 < y+3;y0++){
+                res.add(gridClone.get(y0).get(x0));
+            }
+        }
+        return res;
+    }
+
     private List<Integer> given_a_column(int colIndex) {
         List<List<Integer>> gridClone = grid.getACloneOfTheGrid();
         List<Integer> res = new ArrayList<>();
@@ -85,7 +114,7 @@ public class SudokuGridTest {
         for(int i = 0; i < GRID_ROW_COL_SIZE; i++){
             List<Integer> row = new ArrayList<>();
             for(int j = 0; j < GRID_ROW_COL_SIZE; j++){
-                if(random.nextInt(10) == 1){
+                if(random.nextInt(10) <= 4){
                     row.add(random.nextInt(9)+1);
                 } else {
                     row.add(0);
