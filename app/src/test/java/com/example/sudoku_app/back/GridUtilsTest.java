@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GridUtilsTest {
@@ -15,6 +16,24 @@ public class GridUtilsTest {
         SudokuGrid grid = given_a_complete_grid();
 
         assertThat(GridUtils.isComplete(grid)).isTrue();
+    }
+    
+    @Test
+    public void should_get_all_of_the_possible_numbers_for_the_given_grid() {
+        final int colIndex = 0;
+        final int rowIndex = 1;
+        SudokuGrid grid = given_a_uncompleted_grid(colIndex, rowIndex);
+
+        List<Integer> possibleNums = GridUtils.possibleNumbers(grid, colIndex, rowIndex);
+
+        assertThat(GridUtils.isComplete(grid)).isFalse();
+        assertThat(possibleNums).isEqualTo(singletonList(2)).hasSize(1);
+    }
+
+    private SudokuGrid given_a_uncompleted_grid(int colIndexToRemove, int rowIndexToRemove) {
+        SudokuGrid modifiedGrid = given_a_complete_grid();
+        modifiedGrid.removeElementToGrid(colIndexToRemove, rowIndexToRemove);
+        return modifiedGrid;
     }
 
     private SudokuGrid given_a_complete_grid() {
@@ -30,7 +49,6 @@ public class GridUtilsTest {
         result.add(asList(9, 7, 8, 5, 3, 1, 6, 4, 2));
         return new SudokuGrid(result);
     }
-
 
        /*   ---------------------------------------
             | 1 | 2 | 3 || 4 | 5 | 6 || 7 | 8 | 9 |

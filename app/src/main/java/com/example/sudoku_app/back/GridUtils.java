@@ -1,9 +1,12 @@
 package com.example.sudoku_app.back;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import static com.example.sudoku_app.back.SudokuGrid.GRID_ROW_COL_SIZE;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class GridUtils {
 
@@ -23,5 +26,22 @@ public class GridUtils {
             rowIndex++;
         }
         return true;
+    }
+
+    public static List<Integer> possibleNumbers(SudokuGrid grid, int rowIndex, int colIndex) {
+        final int currentCellValue = grid.getCellValue(rowIndex, colIndex);
+        if (currentCellValue != 0) return singletonList(currentCellValue);
+        List<Integer> result = new ArrayList<>();
+        List<Integer> commonValues = asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        for (int number : commonValues) {
+            if (numberIsNotInSquareAndNotInRowAndNotInColumn(grid, rowIndex, colIndex, number)) {
+                result.add(number);
+            }
+        }
+        return result;
+    }
+
+    private static boolean numberIsNotInSquareAndNotInRowAndNotInColumn(SudokuGrid grid, int rowIndex, int colIndex, int number) {
+        return !grid.get_square(rowIndex, colIndex).contains(number) && !grid.getRow(rowIndex).contains(number) && !grid.getColumn(colIndex).contains(number);
     }
 }
