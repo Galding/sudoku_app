@@ -45,8 +45,8 @@ public class SudokuGrid {
 
     public List<List<Integer>> getACloneOfTheGrid() {
         List<List<Integer>> res = new ArrayList<>();
-        for (int i = 0; i < GRID_ROW_COL_SIZE; i++) {
-            res.add(new ArrayList<>(grid.get(i)));
+        for (List<Integer> data : grid) {
+            res.add(new ArrayList<>(data));
         }
         return res;
     }
